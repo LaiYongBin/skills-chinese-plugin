@@ -1,26 +1,19 @@
 ---
-name: skills-chinese
-description: 将当前所有插件技能和命令的 description 字段汉化为中文，用于初始化或插件更新后重新执行
+description: 将技能和命令的 description 字段汉化为中文，默认仅当前项目，传入 all 则包含全局
+argument-hint: [all]
+allowed-tools: [Read, Edit, Bash, Glob, Grep]
 ---
 
-# 汉化所有技能和命令描述
+# 汉化技能和命令描述
 
-## 概述
-
-扫描技能和命令文件，将 YAML 前置元数据中的英文 `description` 字段翻译为中文并写回。
-
-**通过参数控制扫描范围：**
-
-| 调用方式 | 范围 |
-|----------|------|
-| `/skills-chinese` | 仅当前项目（`.claude/skills` + `.claude/commands`） |
-| `/skills-chinese all` | 全局插件 + 全局个人 skills + 当前项目 |
-
----
+用户调用参数：$ARGUMENTS
 
 ## 扫描范围
 
-### 项目模式（默认，无参数）
+- **无参数**：仅翻译当前项目的 `.claude/skills` 和 `.claude/commands`
+- **参数为 `all`**：翻译全局插件 + 全局个人 skills + 当前项目
+
+### 项目模式（无参数）
 
 ```bash
 find .claude/skills -name "SKILL.md" 2>/dev/null | sort
@@ -30,23 +23,21 @@ find .claude/commands -name "*.md" 2>/dev/null | sort
 ### 全局模式（参数为 `all`）
 
 ```bash
-# 1. superpowers 插件缓存中的 skills 和 commands
+# 1. 插件缓存
 find ~/.claude/plugins/cache -name "SKILL.md" | sort
 find ~/.claude/plugins/cache -path "*/commands/*.md" | sort
 
-# 2. marketplaces 中所有插件的 skills 和 commands
+# 2. marketplaces
 find ~/.claude/plugins/marketplaces -name "SKILL.md" | sort
 find ~/.claude/plugins/marketplaces -path "*/commands/*.md" | sort
 
 # 3. 全局个人 skills
 find ~/.claude/skills -name "SKILL.md" | sort
 
-# 4. 当前项目级 skills 和 commands
+# 4. 当前项目
 find .claude/skills -name "SKILL.md" 2>/dev/null | sort
 find .claude/commands -name "*.md" 2>/dev/null | sort
 ```
-
----
 
 ## 执行步骤
 
@@ -72,4 +63,4 @@ find .claude/commands -name "*.md" 2>/dev/null | sort
 - 只替换 YAML 前置元数据中的第一个 `description:` 行（`count=1`），文件正文中的 `description:` 示例行不受影响
 - description 字段总长度（含 `name` 字段）不超过 1024 字符，翻译后若超长需适当精简
 - 版本号路径（如 `5.0.2`）会随插件更新变化，用 `find` 动态发现即可
-- 跳过本文件自身（`skills-chinese/SKILL.md`）
+- 跳过本文件自身（`skills-chinese.md`）
