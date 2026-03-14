@@ -9,7 +9,11 @@
 ## 安装
 
 ```bash
-/plugin install github:LaiYongBin/skills-chinese-plugin
+# 第一步：添加 marketplace
+/plugin marketplace add LaiYongBin/skills-chinese-marketplace
+
+# 第二步：安装插件
+/plugin install skills-chinese@skills-chinese-marketplace
 ```
 
 ## 使用
