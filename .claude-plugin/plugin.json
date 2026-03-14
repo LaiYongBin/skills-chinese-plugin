@@ -1,0 +1,8 @@
+{
+  "name": "skills-chinese",
+  "description": "将所有插件技能（skills）和命令（commands）的 description 字段汉化为中文，适合中文用户在安装或更新插件后使用",
+  "author": {
+    "name": "LaiYongBin",
+    "email": ""
+  }
+}
