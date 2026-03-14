@@ -7,11 +7,35 @@ description: 将当前所有插件技能和命令的 description 字段汉化为
 
 ## 概述
 
-扫描所有技能和命令文件，将 YAML 前置元数据中的英文 `description` 字段翻译为中文并写回。
+扫描技能和命令文件，将 YAML 前置元数据中的英文 `description` 字段翻译为中文并写回。
 
-## 扫描范围
+**根据当前项目是否存在 `.claude/skills` 或 `.claude/commands` 目录，自动决定扫描范围：**
 
-执行以下命令收集所有需要处理的文件：
+## 扫描范围判断
+
+**第零步：检测项目级目录是否存在**
+
+```bash
+ls .claude/skills 2>/dev/null || ls .claude/commands 2>/dev/null
+```
+
+- **有输出**（项目存在 `.claude/skills` 或 `.claude/commands`）→ **仅扫描项目级**
+- **无输出**（当前项目无自定义 skills/commands）→ **扫描全局**
+
+---
+
+### 项目模式（仅当前项目）
+
+```bash
+find .claude/skills -name "SKILL.md" 2>/dev/null | sort
+find .claude/commands -name "*.md" 2>/dev/null | sort
+```
+
+适用场景：全局 skills 已翻译过，只需处理新项目新增的部分。
+
+---
+
+### 全局模式（首次初始化或全量刷新）
 
 ```bash
 # 1. superpowers 插件缓存中的 skills 和 commands
@@ -24,17 +48,13 @@ find ~/.claude/plugins/marketplaces -path "*/commands/*.md" | sort
 
 # 3. 全局个人 skills
 find ~/.claude/skills -name "SKILL.md" | sort
-
-# 4. 当前项目级 skills 和 commands
-find .claude/skills -name "SKILL.md" 2>/dev/null | sort
-find .claude/commands -name "*.md" 2>/dev/null | sort
 ```
+
+---
 
 ## 执行步骤
 
-**第一步：收集所有文件**
-
-运行上述命令，得到完整文件列表。
+**第一步：按上述规则确定文件列表**
 
 **第二步：逐文件检查并翻译**
 
