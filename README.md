@@ -9,7 +9,7 @@
 ## 安装
 
 ```bash
-/plugin install github:你的用户名/skills-chinese-plugin
+/plugin install github:LaiYongBin/skills-chinese-plugin
 ```
 
 ## 使用
